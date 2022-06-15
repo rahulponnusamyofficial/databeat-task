@@ -1,0 +1,51 @@
+CREATE TABLE Employees(
+    EMP_ID integer PRIMARY KEY,
+    FIRST_NAME varchar,
+    LAST_NAME varchar,
+    SALARY integer,
+    JOINING_DATE date,
+    DEPARTMENT char
+    )
+
+CREATE TABLE Variables_Details(
+    EMP_REF_ID integer FORIEGN KEY REFERENCES Employees(EMP_ID),
+    VARIABLES_DATE date,
+    VARIABLES_AMOUNT int
+    )
+
+CREATE TABLE Designation(
+    EMP_REF_ID integer FORIEGN KEY REFERENCES Employees(EMP_ID),
+    EMP_TITLE varchar,
+    AFFECTED_FROM date
+    )
+    
+CREATE TABLE Salary_Updation(
+    EMP_REF_ID integer FORIEGN KEY REFERENCES Employees(EMP_ID),
+    SALARY INT,
+    JOINING_DATE date,
+    Project varchar
+    )
+_______________________________________________________________________________________________________________________________________________________________
+SELECT FIRST_NAME,LAST_NAME,DEPARTMENT FROM Employees,Variables_Details WHERE VARIABLES_AMOUNT=(SELECT MAX(VARIABLES_AMOUNT) FROM Variables_Details)
+SELECT FIRST_NAME,LAST_NAME,DEPARTMENT FROM Employees,Variables_Details WHERE VARIABLES_AMOUNT=(SELECT MIN(VARIABLES_AMOUNT) FROM Variables_Details)
+_______________________________________________________________________________________________________________________________________________________________
+
+CREATE TABLE Employee_Clones AS SELECT * FROM Employees WHERE 1=2
+_______________________________________________________________________________________________________________________________________________________________
+--Maximum 
+SELECT EMP_TITLE FROM Designation,Variables_Details,Employees WHERE (SELECT MAX(SALARY+VARIABLES_AMOUNT) FROM Salary_Updation, Variables_Details)
+--Second Maximum
+SELECT EMP_TITLE FROM Designation,Variables_Details,Employees WHERE (SALARY+VARIABLES_AMOUNT)<(SELECT MAX(SALARY+VARIABLES_AMOUNT) FROM Salary_Updation, Variables_Details ) 
+_________________________________________________________________________________________________________________________________________________________________
+SELECT EMP_ID FROM Employees WHERE EMP_ID NOT IN (SELECT EMP_REF_ID FROM Salary_Updation)
+_________________________________________________________________________________________________________________________________________________________________
+SELECT * FROM Employees WHERE EMP_ID%2<>0 --When Employee ID is unique and works as a row number
+________________________________________________________________________________________________________________________________________________________________
+SELECT EMP_ID,SALARY,JOINING_DATE FROM Employees WHERE JOINING_DATE IN (SELECT MAX(JOINING_DATE) FROM Employees GROUP BY EMP_ID ) GROUP BY EMP_ID;
+__________________________________________________________________________________________________________________________________________________________________
+SELECT * FROM Employees, Salary_Updation WHERE Project IS NULL
+__________________________________________________________________________________________________________________________________________________________________
+SELECT * FROM Employees CROSS JOIN Designation
+__________________________________________________________________________________________________________________________________________________________________
+SELECT * from Employees,Variables_Details where joining_date between '01-07-2019' and '31-12-2019' AND DEPARTMENT like '%A%' order by VARIABLES_AMOUNT desc
+___________________________________________________________________________________________________________________________________________________________________
