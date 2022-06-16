@@ -7,23 +7,29 @@ CREATE TABLE Employees(
     DEPARTMENT char
     )
 
-CREATE TABLE Variables_Details(
-    EMP_REF_ID integer FORIEGN KEY REFERENCES Employees(EMP_ID),
-    VARIABLES_DATE date,
-    VARIABLES_AMOUNT int
+CREATE TABLE Variables_Details (
+    EMP_REF_ID INT NOT NULL,
+    VARIABLES_DATE DATETIME,
+    VARIABLES_AMOUNT int,
+  	FOREIGN KEY (EMP_REF_ID) REFERENCES Employees(EMP_ID)
     )
 
+
+
 CREATE TABLE Designation(
-    EMP_REF_ID integer FORIEGN KEY REFERENCES Employees(EMP_ID),
+    EMP_REF_ID int,
     EMP_TITLE varchar,
-    AFFECTED_FROM date
+    AFFECTED_FROM DATETIME,
+  	FOREIGN KEY (EMP_REF_ID) REFERENCES Employees(EMP_ID)
     )
     
+    
 CREATE TABLE Salary_Updation(
-    EMP_REF_ID integer FORIEGN KEY REFERENCES Employees(EMP_ID),
+    EMP_REF_ID int,
     SALARY INT,
-    JOINING_DATE date,
-    Project varchar
+    JOINING_DATE DATETIME,
+    Project varchar,
+  	FOREIGN KEY (EMP_REF_ID) REFERENCES Employees(EMP_ID)
     )
 _______________________________________________________________________________________________________________________________________________________________
 SELECT FIRST_NAME,LAST_NAME,DEPARTMENT FROM Employees,Variables_Details WHERE VARIABLES_AMOUNT=(SELECT MAX(VARIABLES_AMOUNT) FROM Variables_Details)
